@@ -9,4 +9,5 @@ public interface AppleService {
     String APPLE_COLOR_GREEN = "GREEN";
 
     List<Apple> filterGreenApples(List<Apple> appleList);
+    List<Apple> filterApples(List<Apple> appleList, ApplePredicate predicate);
 }
