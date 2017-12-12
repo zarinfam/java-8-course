@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DataUtil {
+public class TestDataUtil {
 
     public static List<Apple> createSampleApple() {
         return new ArrayList(Arrays.asList(
