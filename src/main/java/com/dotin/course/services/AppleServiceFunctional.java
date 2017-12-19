@@ -4,6 +4,7 @@ import com.dotin.course.model.Apple;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class AppleServiceFunctional implements AppleService {
 
@@ -22,5 +23,10 @@ public class AppleServiceFunctional implements AppleService {
 
         return greenApple;
 
+    }
+
+    @Override
+    public List<Apple> filterApples1(List<Apple> appleList, Predicate<Apple> predicate) {
+        return filterApples(appleList, apple -> predicate.test(apple));
     }
 }
