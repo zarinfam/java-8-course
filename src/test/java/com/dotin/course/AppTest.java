@@ -93,12 +93,22 @@ public class AppTest {
         assertThat(name3, equalTo("Ali-"));
     }
 
+    @Test
+    public void success_map_optional() {
+
+        Optional<Integer> sum = generateOptionalNumber(1)
+                .flatMap(n1 -> generateOptionalNumber(2).map(n2 -> n1 + n2))
+                .flatMap(n12 -> generateOptionalNumber(3).map(n3 -> n12 + n3));
+
+        assertThat(sum.orElse(0), equalTo(6));
+    }
+
     private String concatNames(String name1, Optional<String> name2) {
 
         return name1 + "-" + name2.orElse("");
     }
 
-    private Optional<Integer> generateOptionalNumber(int i){
+    private Optional<Integer> generateOptionalNumber(int i) {
         return Optional.of(i);
     }
 
