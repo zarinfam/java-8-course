@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -97,5 +98,8 @@ public class AppTest {
         return name1 + "-" + name2.orElse("");
     }
 
+    private Optional<Integer> generateOptionalNumber(int i){
+        return Optional.of(i);
+    }
 
 }
