@@ -7,6 +7,7 @@ import com.dotin.course.services.ServiceFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -41,9 +42,15 @@ public class AppTest {
     @Test
     public void success_filter_green_apple_and_weight_greater_10() {
 
-        Function<Apple, Boolean> f = (Apple apple) -> (APPLE_COLOR_GREEN.equals(apple.getColor()) && 10 > apple.getWeight());
+        Function<Apple, Boolean> p1 = (Apple apple) -> (APPLE_COLOR_GREEN.equals(apple.getColor()) );
+        Function<Apple, Boolean> p2 = (Apple apple) -> (10 > apple.getWeight());
+        Function<Apple, Boolean> f = (apple) -> p1.apply(apple) && p2.apply(apple);
+
         Predicate<Apple> a1 = (Apple apple) -> (APPLE_COLOR_GREEN.equals(apple.getColor()));
-        Predicate<Apple> a2 = (Apple apple) -> (10 > apple.getWeight());
+
+        final int x = 10;
+        Predicate<Apple> a2 = (Apple apple) -> (x > apple.getWeight());
+
         Predicate<Apple> f1 = a1.and(a2);
         ApplePredicate f2 = (Apple apple) -> (APPLE_COLOR_GREEN.equals(apple.getColor()) && 10 > apple.getWeight());
 
@@ -54,6 +61,11 @@ public class AppTest {
         assertThat(appleService.filterApples1(appleList
                 , f1)
                 , hasSize(1));
+
+        assertThat(appleService.filterApples1(appleList
+                , a -> f.apply(a))
+                , hasSize(1));
+
 
     }
 

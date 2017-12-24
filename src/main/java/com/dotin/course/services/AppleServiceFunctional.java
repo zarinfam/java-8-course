@@ -27,6 +27,6 @@ public class AppleServiceFunctional implements AppleService {
 
     @Override
     public List<Apple> filterApples1(List<Apple> appleList, Predicate<Apple> predicate) {
-        return filterApples(appleList, apple -> predicate.test(apple));
+        return filterApples(appleList, predicate::test);
     }
 }
