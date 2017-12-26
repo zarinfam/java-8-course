@@ -4,16 +4,15 @@ import com.dotin.course.model.Apple;
 import com.dotin.course.services.ApplePredicate;
 import com.dotin.course.services.AppleService;
 import com.dotin.course.services.ServiceFactory;
-import org.hamcrest.CoreMatchers;
+import com.dotin.course.streams.Dish;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static com.dotin.course.services.AppleService.APPLE_COLOR_GREEN;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -23,11 +22,13 @@ import static org.junit.Assert.assertThat;
 public class AppTest {
 
     private List<Apple> appleList;
+    private List<Dish> dishes;
     private AppleService appleService = ServiceFactory.getAppleService();
 
     @Before
     public void init() {
-        appleList = TestDataUtil.createSampleApple();
+        appleList = TestDataUtil.createSampleApples();
+        dishes = TestDataUtil.createSampleDishes();
     }
 
     @Test
@@ -102,6 +103,13 @@ public class AppTest {
 
         assertThat(sum.orElse(0), equalTo(6));
     }
+
+    @Test
+    public void success_filter_green_apple_and_weight_greater_10_using_stream(){
+        assertThat(appleList.stream().filter(apple -> (APPLE_COLOR_GREEN.equals(apple.getColor()) && 10 > apple.getWeight()))
+                .collect(Collectors.toList()), hasSize(1));
+    }
+
 
     private String concatNames(String name1, Optional<String> name2) {
 
