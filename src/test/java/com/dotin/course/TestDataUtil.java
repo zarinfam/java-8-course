@@ -2,6 +2,8 @@ package com.dotin.course;
 
 import com.dotin.course.model.Apple;
 import com.dotin.course.streams.Dish;
+import com.dotin.course.transaction.Trader;
+import com.dotin.course.transaction.Transaction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +36,23 @@ public class TestDataUtil {
                 new Dish("pizza", true, 550, Dish.Type.OTHER),
                 new Dish("prawns", false, 300, Dish.Type.FISH),
                 new Dish("salmon", false, 450, Dish.Type.FISH)));
+
+    }
+
+    public static List<Transaction> createSampleTransaction() {
+        Trader raoul = new Trader("Raoul", "Cambridge");
+        Trader mario = new Trader("Mario", "Milan");
+        Trader alan = new Trader("Alan", "Cambridge");
+        Trader brian = new Trader("Brian", "Cambridge");
+
+        return new ArrayList<>(Arrays.asList(
+                new Transaction(brian, 2011, 300),
+                new Transaction(raoul, 2012, 1000),
+                new Transaction(raoul, 2011, 400),
+                new Transaction(mario, 2012, 710),
+                new Transaction(mario, 2012, 700),
+                new Transaction(alan, 2012, 950)
+        ));
 
     }
 }
