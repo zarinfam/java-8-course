@@ -8,14 +8,20 @@ import com.dotin.course.streams.Dish;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.dotin.course.services.AppleService.APPLE_COLOR_GREEN;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.*;
 import static org.junit.Assert.assertThat;
 
@@ -105,9 +111,29 @@ public class AppTest {
     }
 
     @Test
-    public void success_filter_green_apple_and_weight_greater_10_using_stream(){
+    public void success_filter_green_apple_and_weight_greater_10_using_stream() {
         assertThat(appleList.stream().filter(apple -> (APPLE_COLOR_GREEN.equals(apple.getColor()) && 10 > apple.getWeight()))
                 .collect(Collectors.toList()), hasSize(1));
+    }
+
+    @Test
+    public void success_filter_vegetarians_using_stream() {
+
+        assertThat(dishes.stream().filter(Dish::isVegetarian)
+                        .flatMap(dish -> Stream.of(dish.getName().split("")))
+                        .collect(Collectors.toList())
+                , hasSize(33));
+    }
+
+    @Test
+    public void success_sum_fish_type_calories_using_stream() {
+
+        assertThat(dishes.stream()
+                        .filter(dish -> dish.getType() == Dish.Type.FISH)
+                        .map(Dish::getCalories).reduce(Integer::sum)
+                , is(750));
+
+
     }
 
 
