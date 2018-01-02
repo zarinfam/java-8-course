@@ -5,21 +5,18 @@ import com.dotin.course.services.ApplePredicate;
 import com.dotin.course.services.AppleService;
 import com.dotin.course.services.ServiceFactory;
 import com.dotin.course.streams.Dish;
+import com.dotin.course.transaction.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.dotin.course.services.AppleService.APPLE_COLOR_GREEN;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.*;
@@ -29,12 +26,14 @@ public class AppTest {
 
     private List<Apple> appleList;
     private List<Dish> dishes;
+    private List<Transaction> transactions;
     private AppleService appleService = ServiceFactory.getAppleService();
 
     @Before
     public void init() {
         appleList = TestDataUtil.createSampleApples();
         dishes = TestDataUtil.createSampleDishes();
+        transactions = TestDataUtil.createSampleTransaction();
     }
 
     @Test
@@ -134,6 +133,32 @@ public class AppTest {
                 , is(750));
 
 
+    }
+
+    @Test
+    public void success_Return_a_string_of_all_traders_names_sorted_alphabetically() {
+        assertThat(transactions.stream()
+                .map(t -> t.getTrader().getName())
+                .distinct()
+                .sorted()
+                .collect(joining(",")), is("Alan,Brian,Mario,Raoul"));
+    }
+
+    @Test
+    public void success_groupby_dish_by_type() {
+        assertThat(dishes.stream()
+                .collect(groupingBy(Dish::getType)).size(), is(3));
+    }
+
+    @Test
+    public void success_min_callory_by_type() {
+        Stream<Dish> temp = dishes.stream()
+                .collect(groupingBy(Dish::getType))
+                .entrySet().stream()
+                .map(entry -> entry.getValue()
+                        .stream().min(Comparator.comparingInt(Dish::getCalories)).orElseThrow(() -> new RuntimeException()));
+
+        assertThat(temp.collect(groupingBy(Dish::getType)),is("") );
     }
 
 
